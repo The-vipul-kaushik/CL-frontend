@@ -10,6 +10,7 @@ import Logout from '../components/Logout';
 import { Redirect } from 'react-router-dom';
 import TeamData from '../components/TeamData';
 import MatchData from '../components/MatchData';
+import AddOrganiser from '../components/AddOrganiser';
 
 const AdminRoutes = () => {
 
@@ -23,15 +24,16 @@ const AdminRoutes = () => {
                             <Route exact path="/" > <Home /> </Route>
                             <Route path="/home" > <Home /> </Route>
                             <Route path="/organiser"> <OrganiserData /> </Route>
+                            <Route path="/add-organiser"> <AddOrganiser /> </Route>
                             <Route path="/tournament"> <TournamentData /> </Route>
                             <Route path="/team"> <TeamData /> </Route>
                             <Route path="/match"> <MatchData /> </Route>
                             {/*<Route path="/ticket"> <Ticket /> </Route>
                             <Route path="/audience"> <Audience /> </Route> */}
-                            <Route path="/register"> <Redirect> <Home /> </Redirect> </Route>
+                            {/* <Route path="/register"> <Redirect> <Home /> </Redirect> </Route>
                             <Route path="/login"> <Redirect> <Home /> </Redirect> </Route>
                             <Route path="/logout"> <Logout /> </Route>
-                            <Route path="/*"> <Page404 /> </Route>
+                            <Route path="/*"> <Page404 /> </Route> */}
                         </Switch>
                     </div>
                     <Footer />
