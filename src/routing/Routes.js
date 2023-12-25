@@ -9,12 +9,15 @@ import { useEffect, useState } from 'react';
 import AdminRoutes from "./AdminRoutes";
 import OwnerRoutes from "./OwnerRoutes";
 import AudienceRoutes from "./AudienceRoutes";
+import AppUser from '../models/AppUser';
 
 const Routes = () => {
 
     // localStorage.removeItem('loggedInUser');
+    // localStorage.setItem('loggedInUser');
 
     let [user, setUser] = useState({});
+
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('loggedInUser')));
         console.log(JSON.parse(localStorage.getItem('loggedInUser')));

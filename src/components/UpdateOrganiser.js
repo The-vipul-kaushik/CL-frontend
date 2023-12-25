@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../stylesheets/Org.css";
-import { addOrgService } from "../services/OrganiserService";
 import { Link } from "react-router-dom";
 import Organiser from "../models/Organiser";
+import { getOrgByIdService } from "../services/OrganiserService";
+import { updateOrgService } from "../services/OrganiserService";
 
-const AddOrganiser = () => {
+const UpdateOrganiser = () => {
   const [oid, setOid] = useState(0);
   const [org, setOrg] = useState(new Organiser());
-  const [orgToBeAdded, setOrgToBeAdded] = useState(new Organiser());
+  const [orgToBeUpdated, setOrgToBeUpdated] = useState(new Organiser());
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // orgToBeUpdated = getOrgByIdService.getOrgByIdService(idToUpdate);
+    // setOrgToBeUpdated(getOrgByIdService.getOrgByIdService(idToUpdate));
+  }, []);
 
   const handleChange = (evt) => {
     console.log(evt.target.name);
@@ -20,32 +24,32 @@ const AddOrganiser = () => {
     setOid(evt.target.value);
   };
 
-  const handleAddOrg = (e) => {
+  const handleUpdateOrg = (e) => {
     console.log(e.target.name);
     console.log(e.target.value);
-    setOrgToBeAdded({
-      ...orgToBeAdded,
+    setOrgToBeUpdated({
+      ...orgToBeUpdated,
       [e.target.name]: e.target.value,
     });
   };
 
-  const submitAddOrg = (evt) => {
+  const submitUpdateOrg = (evt) => {
     evt.preventDefault();
-    console.log(orgToBeAdded);
-    let OrgToAdd = { ...orgToBeAdded };
-    addOrgService(OrgToAdd)
+    console.log(orgToBeUpdated);
+    let OrgToUpdate = { ...orgToBeUpdated };
+    updateOrgService(OrgToUpdate)
       .then((response) => {
         console.log(response.data);
         alert(
-          `Organiser with Organiser id ${response.data.organiserId} added successfully.`
+          `Organiser with Organiser id ${response.data.organiserId} Updated successfully.`
         );
       })
       .catch(() => {
-        setOrgToBeAdded(new Organiser());
-        OrgToAdd = "";
-        alert("Organiser could not be added.");
+        setOrgToBeUpdated(new Organiser());
+        OrgToUpdate = "";
+        alert("Organiser could not be Updated.");
       });
-      setOrgToBeAdded(new Organiser());
+      setOrgToBeUpdated(new Organiser());
   };
 
   return (
@@ -58,15 +62,15 @@ const AddOrganiser = () => {
     >
       <div className="container pt-5 pb-5">
         <div className="bg-white shadow shadow-regular mb-5 mt-0 px-3 py-3 pb-3 pt-3 col-8 text-center">
-          <p className="font-weight-bold">ADD NEW ORGANISER</p>
+          <p className="font-weight-bold">UPDATE ORGANISER</p>
           <div className="form form-group">
             <input
               type="text"
               id="organiserName"
               name="organiserName"
               className="form-control mb-3 mt-3"
-              value={orgToBeAdded.organiserName}
-              onChange={handleAddOrg}
+              value={orgToBeUpdated.organiserName}
+              onChange={handleUpdateOrg}
               placeholder="Enter Organiser Name"
               autoFocus
             />
@@ -75,8 +79,8 @@ const AddOrganiser = () => {
               id="email"
               name="email"
               className="form-control mb-3 mt-3"
-              value={orgToBeAdded.email}
-              onChange={handleAddOrg}
+              value={orgToBeUpdated.email}
+              onChange={handleUpdateOrg}
               placeholder="Enter email"
             />
             <input
@@ -84,8 +88,8 @@ const AddOrganiser = () => {
               id="phone"
               name="phone"
               className="form-control mb-3 mt-3"
-              value={orgToBeAdded.phone}
-              onChange={handleAddOrg}
+              value={orgToBeUpdated.phone}
+              onChange={handleUpdateOrg}
               placeholder="Enter phone number"
             />
             <input
@@ -93,8 +97,8 @@ const AddOrganiser = () => {
               id="payment"
               name="payment"
               className="form-control mb-3 mt-3"
-              value={orgToBeAdded.payment}
-              onChange={handleAddOrg}
+              value={orgToBeUpdated.payment}
+              onChange={handleUpdateOrg}
               placeholder="Enter payment"
             />
             <input
@@ -102,8 +106,8 @@ const AddOrganiser = () => {
               id="budget"
               name="budget"
               className="form-control mb-3 mt-3"
-              value={orgToBeAdded.budget}
-              onChange={handleAddOrg}
+              value={orgToBeUpdated.budget}
+              onChange={handleUpdateOrg}
               placeholder="Enter budget"
             />
             
@@ -112,7 +116,7 @@ const AddOrganiser = () => {
               type="submit"
               className="btn btn-outline-success mb-3 mt-3"
               value="Add Organiser"
-              onClick={submitAddOrg}
+              onClick={submitUpdateOrg}
             />
           <Link to="/organiser">
             <button className="btn btn-outline-secondary ml-5">
@@ -125,4 +129,4 @@ const AddOrganiser = () => {
   );
 };
 
-export default AddOrganiser;
+export default UpdateOrganiser;

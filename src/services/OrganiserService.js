@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const springBootAppUrl = `http://localhost:8088/`;
-const springBootAppUrl = `https://apimocha.com/userdb/`;
+const springBootAppUrl = `http://localhost:8088/`;
+// const springBootAppUrl = `https://apimocha.com/userdb/`;
 
 const getOrgByIdService = (oid) => {
     console.log(oid);

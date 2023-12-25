@@ -291,7 +291,7 @@ const OrganiserData = () => {
                             <td>{e.payment}</td>
                             <td>{e.budget}</td>
                             <td>
-                              <Link to="/update-component">
+                              <Link to={`/update-component/${e.organiserId}`}>
                                 <FontAwesomeIcon icon={faPenToSquare} />
                               </Link>
                             </td>
