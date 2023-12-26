@@ -1,21 +1,33 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../stylesheets/Org.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Organiser from "../models/Organiser";
 import { getOrgByIdService } from "../services/OrganiserService";
 import { updateOrgService } from "../services/OrganiserService";
+import { useLocation } from "react-router-dom";
+import { getOrgById } from "../redux/OrgSlice";
 
 const UpdateOrganiser = () => {
   const [oid, setOid] = useState(0);
   const [org, setOrg] = useState(new Organiser());
   const [orgToBeUpdated, setOrgToBeUpdated] = useState(new Organiser());
 
+  const location = useLocation();
+  // const params = new URLSearchParams(location.search);
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // orgToBeUpdated = getOrgByIdService.getOrgByIdService(idToUpdate);
-    // setOrgToBeUpdated(getOrgByIdService.getOrgByIdService(idToUpdate));
+    getOrgByIdService(id)
+      .then((response) => {
+        dispatch(getOrgById(response.data));
+        console.log(response.data);
+        setOrgToBeUpdated(response.data);
+      })
+      .catch((error) => {
+        alert(`Organiser with Organiser id ${oid} not found !`);
+      });
   }, []);
 
   const handleChange = (evt) => {
@@ -49,7 +61,7 @@ const UpdateOrganiser = () => {
         OrgToUpdate = "";
         alert("Organiser could not be Updated.");
       });
-      setOrgToBeUpdated(new Organiser());
+    setOrgToBeUpdated(new Organiser());
   };
 
   return (
@@ -110,18 +122,15 @@ const UpdateOrganiser = () => {
               onChange={handleUpdateOrg}
               placeholder="Enter budget"
             />
-            
           </div>
           <input
-              type="submit"
-              className="btn btn-outline-success mb-3 mt-3"
-              value="Add Organiser"
-              onClick={submitUpdateOrg}
-            />
+            type="submit"
+            className="btn btn-outline-success mb-3 mt-3"
+            value="Update Organiser"
+            onClick={submitUpdateOrg}
+          />
           <Link to="/organiser">
-            <button className="btn btn-outline-secondary ml-5">
-                Back
-            </button>
+            <button className="btn btn-outline-secondary ml-5">Back</button>
           </Link>
         </div>
       </div>

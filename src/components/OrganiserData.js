@@ -5,7 +5,7 @@ import { getOrgById } from "../redux/OrgSlice";
 import { getAllOrgs } from "../redux/OrgSlice";
 import { getAllToursByOrgId } from "../redux/OrgSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import "../stylesheets/Org.css";
 import {
   getOrgByIdService,
@@ -13,8 +13,10 @@ import {
   addOrgService,
   updateOrgService,
   getToursByOrgIdService,
+  deleteOrganiserByIdService,
 } from "../services/OrganiserService";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const OrganiserData = () => {
   const [oid, setOid] = useState(0);
@@ -23,10 +25,12 @@ const OrganiserData = () => {
   const [orgToBeUpdated, setOrgToBeUpdated] = useState({});
   const [allOrgs, setAllOrgs] = useState([]);
   const [allTours, setAllTours] = useState([]);
+  const [refresh, setRefresh] = useState([false]);
 
   const orgDataFromStore = useSelector((abc) => abc.org.orgData);
   const allOrgsDataFromStore = useSelector((state) => state.org.orgList);
   const allToursDataFromStore = useSelector((state) => state.org.tourList);
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -142,6 +146,15 @@ const OrganiserData = () => {
         OrgToUpdate = "";
         alert(`There is no organiser with id ${orgToBeUpdated.organiserId}`);
       });
+  };
+
+  const handleDelete = (idToDelete) => {
+    deleteOrganiserByIdService(idToDelete)
+      .then((data) => {
+        console.log("deleted successfully!");
+        setRefresh(true);
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -291,13 +304,16 @@ const OrganiserData = () => {
                             <td>{e.payment}</td>
                             <td>{e.budget}</td>
                             <td>
-                              <Link to={`/update-component/${e.organiserId}`}>
+                              <Link to={`/update-organiser/${e.organiserId}`}>
                                 <FontAwesomeIcon icon={faPenToSquare} />
                               </Link>
                             </td>
                             <td>
-                              <Link to="/update-component">
-                              <FontAwesomeIcon icon={faTrashCan} />
+                              <Link
+                                onClick={() => handleDelete(e.organiserId)}
+                                to={"/organiser"}
+                              >
+                                <FontAwesomeIcon icon={faTrashCan} />
                               </Link>
                             </td>
                           </tr>

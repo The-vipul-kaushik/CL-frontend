@@ -26,7 +26,7 @@ const AdminRoutes = () => {
                             <Route path="/home" > <Home /> </Route>
                             <Route path="/organiser"> <OrganiserData /> </Route>
                             <Route path="/add-organiser"> <AddOrganiser /> </Route>
-                            <Route path="/update-organiser/:id"> <UpdateOrganiser/> </Route>
+                            <Route path="/update-organiser/:id"> <UpdateOrganiser /> </Route>
                             <Route path="/tournament"> <TournamentData /> </Route>
                             <Route path="/team"> <TeamData /> </Route>
                             <Route path="/match"> <MatchData /> </Route>
