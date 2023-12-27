@@ -12,7 +12,9 @@ const AddOrganiser = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setOrgToBeAdded(new Organiser());
+  }, []);
 
   const handleChange = (evt) => {
     console.log(evt.target.name);
@@ -39,6 +41,7 @@ const AddOrganiser = () => {
         alert(
           `Organiser with Organiser id ${response.data.organiserId} added successfully.`
         );
+        window.location.reload();
       })
       .catch(() => {
         setOrgToBeAdded(new Organiser());

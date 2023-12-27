@@ -149,12 +149,18 @@ const OrganiserData = () => {
   };
 
   const handleDelete = (idToDelete) => {
-    deleteOrganiserByIdService(idToDelete)
-      .then((data) => {
-        console.log("deleted successfully!");
-        setRefresh(true);
-      })
-      .catch((error) => console.error(error));
+    if (
+      window.confirm(`Are you sure to delete Organiser ${idToDelete}`) == true
+    ) {
+      deleteOrganiserByIdService(idToDelete)
+        .then((data) => {
+          window.location.reload();
+          alert("Deleted successfully!");
+          // history.push("/organiser");
+        })
+        .catch((error) => console.error(error));
+    } else {
+    }
   };
 
   return (
@@ -165,110 +171,9 @@ const OrganiserData = () => {
     //     'width': '100%',
     // }}
     >
-      <div className="container pt-5 pb-5">
-        {/* <div className="bg-white shadow shadow-regular mb-5 mt-0 px-3 py-3 pb-3 pt-3 col-8 text-center">
-                <p className="font-weight-bold">ADD NEW ORGANISER</p>
-                <div className="form form-group" >
-                    <input
-                        type="text"
-                        id="organiserName"
-                        name="organiserName"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeAdded.organiserName}
-                        onChange={handleAddOrg}
-                        placeholder="Enter Organiser Name" 
-                        autoFocus/>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeAdded.email}
-                        onChange={handleAddOrg}
-                        placeholder="Enter email" />
-                    <input
-                        type="number"
-                        id="phone"
-                        name="phone"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeAdded.phone}
-                        onChange={handleAddOrg}
-                        placeholder="Enter phone number" />
-                    <input
-                        type="number"
-                        id="payment"
-                        name="payment"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeAdded.payment}
-                        onChange={handleAddOrg}
-                        placeholder="Enter payment" />
-                    <input
-                        type="number"
-                        id="budget"
-                        name="budget"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeAdded.budget}
-                        onChange={handleAddOrg}
-                        placeholder="Enter budget" />
-                    <input
-                        type="submit"
-                        className="btn btn-success form-control mb-3 mt-3"
-                        value="Add Organiser"
-                        onClick={submitAddOrg}
-                    />
-                </div>
-            </div>
-            <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-8">
-                <p className="font-weight-bold">SEARCH FOR AN ORGANISER</p>
-                <div>
-                    <form className="form form-group">
-                        <input
-                            type="number"
-                            className="form-control mb-3 mt-3"
-                            id="oid"
-                            value={oid}
-                            placeholder="Enter Organiser id"
-                            onChange={handleChange}
-                             />
-                        <input type="submit" className="form-control mb-3 mt-3 btn btn-success" value="Get Organiser" onClick={submitGetOrgById} />
-                    </form>
-                </div>
-                <div> {(orgDataFromStore.organiserId) &&
-                    <table className="table table-bordered ">
-                        <thead>
-                            <tr>
-                                <th>Organiser id:</th>
-                                <td>{orgDataFromStore.organiserId}</td>
-                            </tr>
-                            <tr>
-                                <th>Organier Name:</th>
-                                <td>{orgDataFromStore.organiserName}</td>
-                            </tr>
-                            <tr>
-                                <th>Organier email</th>
-                                <td>{orgDataFromStore.email}</td>
-                            </tr>
-                            <tr>
-                                <th>Organier phone</th>
-                                <td>{orgDataFromStore.phone}</td>
-                            </tr>
-                            <tr>
-                                <th>Organier payment</th>
-                                <td>{orgDataFromStore.payment}</td>
-                            </tr>
-                            <tr>
-                                <th>Organier budget</th>
-                                <td>{orgDataFromStore.budget}</td>
-                            </tr>
-                        </thead>
-                    </table>
-                }
-
-                </div>
-            </div> */}
-
+      <div className="container pt-1 pb-5">
         <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-8">
-          <p className="font-weight-bold">AVAILABLE ORGANISERS</p>
+          
           <div className="form form-group">
             {/* <input
                         type="button"
@@ -281,15 +186,16 @@ const OrganiserData = () => {
             <div>
               {allOrgsDataFromStore.length > 0 ? (
                 <div>
+                  <p className="font-weight-bold">AVAILABLE ORGANISERS</p>
                   {/* <p className="text-primary text-center font-weight-bold lead">List of All Organisers</p> */}
                   {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th>Org Id</th>
-                          <th>Org Name</th>
-                          <th>email</th>
-                          <th>phone</th>
+                          <th>Id</th>
+                          <th>Name</th>
+                          <th>Mail</th>
+                          <th>Phone</th>
                           <th>Payment</th>
                           <th>Budget</th>
                         </tr>
@@ -325,7 +231,7 @@ const OrganiserData = () => {
               ) : (
                 <>
                   <p>Ah!</p>
-                  <p>There are no organisers...</p>
+                  <p>There are no Organisers...</p>
                 </>
               )}
             </div>
@@ -341,68 +247,7 @@ const OrganiserData = () => {
             <button className="btn btn-outline-secondary ml-5">Back</button>
           </Link>
         </div>
-        {/* 
-            <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-8">
-                <p className="font-weight-bold">UPDATE AN EXISTING ORGANISER</p>
-                <div className="form form-group" >
-                    <input
-                        type="number"
-                        className="form-control mb-3 mt-3"
-                        id="organiserId"
-                        name="organiserId"
-                        value={orgToBeUpdated.organiserId}
-                        placeholder="Enter organiser id"
-                        onChange={handleUpdateOrg}
-                        />
-                    <input
-                        type="text"
-                        id="organiserName"
-                        name="organiserName"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeUpdated.organiserName}
-                        onChange={handleUpdateOrg}
-                        placeholder="Enter Organiser Name" />
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeUpdated.email}
-                        onChange={handleUpdateOrg}
-                        placeholder="Enter email" />
-                    <input
-                        type="number"
-                        id="phone"
-                        name="phone"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeUpdated.phone}
-                        onChange={handleUpdateOrg}
-                        placeholder="Enter phone number" />
-                    <input
-                        type="number"
-                        id="payment"
-                        name="payment"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeUpdated.payment}
-                        onChange={handleUpdateOrg}
-                        placeholder="Enter payment" />
-                    <input
-                        type="number"
-                        id="budget"
-                        name="budget"
-                        className="form-control mb-3 mt-3"
-                        value={orgToBeUpdated.budget}
-                        onChange={handleUpdateOrg}
-                        placeholder="Enter budget" />
-                    <input
-                        type="submit"
-                        className="btn btn-warning form-control mb-3 mt-3"
-                        value="Update Organiser"
-                        onClick={submitUpdateOrg}
-                    />
-                </div>
-            </div> */}
-
+        
         {/* <div className="bg-white shadow shadow-regular mb-5 px-3 py-3 pb-3 pt-3 col-8">
                 <p className="font-weight-bold">GET ALL TOURNAMENTS OF AN ORGANISER</p>
                     <div className="form form-group" >

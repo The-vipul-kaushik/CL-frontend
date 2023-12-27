@@ -7,6 +7,7 @@ import { getOrgByIdService } from "../services/OrganiserService";
 import { updateOrgService } from "../services/OrganiserService";
 import { useLocation } from "react-router-dom";
 import { getOrgById } from "../redux/OrgSlice";
+import { useHistory } from "react-router-dom";
 
 const UpdateOrganiser = () => {
   const [oid, setOid] = useState(0);
@@ -17,6 +18,7 @@ const UpdateOrganiser = () => {
   // const params = new URLSearchParams(location.search);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     getOrgByIdService(id)
@@ -55,6 +57,7 @@ const UpdateOrganiser = () => {
         alert(
           `Organiser with Organiser id ${response.data.organiserId} Updated successfully.`
         );
+        history.push("/organiser");
       })
       .catch(() => {
         setOrgToBeUpdated(new Organiser());
