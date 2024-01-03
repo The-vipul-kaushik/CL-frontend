@@ -14,6 +14,10 @@ import AddOrganiser from '../components/AddOrganiser';
 import UpdateOrganiser from '../components/UpdateOrganiser';
 import AddTournament from '../components/AddTournament';
 import UpdateTournament from '../components/UpdateTournament';
+import AddTeam from '../components/AddTeam';
+import UpdateTeam from '../components/UpdateTeam';
+import AddMatch from '../components/AddMatch';
+import UpdateMatch from '../components/UpdateMatch';
 
 const AdminRoutes = () => {
 
@@ -27,13 +31,17 @@ const AdminRoutes = () => {
                             <Route exact path="/" > <Home /> </Route>
                             <Route path="/home" > <Home /> </Route>
                             <Route path="/organiser"> <OrganiserData /> </Route>
-                            <Route path="/add-organiser"> <AddOrganiser /> </Route>
-                            <Route path="/add-tournament"> <AddTournament /> </Route>
-                            <Route path="/update-organiser/:id"> <UpdateOrganiser /> </Route>
-                            <Route path="/update-tournament/:id"> <UpdateTournament /> </Route>
                             <Route path="/tournament"> <TournamentData /> </Route>
                             <Route path="/team"> <TeamData /> </Route>
                             <Route path="/match"> <MatchData /> </Route>
+                            <Route path="/add-organiser"> <AddOrganiser /> </Route>
+                            <Route path="/add-tournament"> <AddTournament /> </Route>
+                            <Route path="/add-team"> <AddTeam /> </Route>
+                            <Route path="/add-match"> <AddMatch /> </Route>
+                            <Route path="/update-organiser/:id"> <UpdateOrganiser /> </Route>
+                            <Route path="/update-tournament/:id"> <UpdateTournament /> </Route>
+                            <Route path="/update-team/:id"> <UpdateTeam /> </Route>
+                            <Route path="/update-match/:id"> <UpdateMatch /> </Route>
                             {/*<Route path="/ticket"> <Ticket /> </Route>
                             <Route path="/audience"> <Audience /> </Route> */}
                             <Route path="/register"> <Redirect> <Home /> </Redirect> </Route>

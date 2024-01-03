@@ -19,6 +19,7 @@ const getAllTeamsService = () => {
 
 const addTeamService = (team) => {
     console.log(`addTeamService`);
+    console.log(team);
     return axios.post(`${springBootAppUrl}team/add-team`, team);
 }
 

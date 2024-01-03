@@ -3,226 +3,240 @@ import Match from "../models/Match";
 import Tournament from "../models/Tournament";
 import { useDispatch, useSelector } from "react-redux";
 import { getMatchById, getAllMatches } from "../redux/MatchSlice";
-
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import {
-    getMatchByIdService, getMatchByNameService, getAllMatchesService, addMatchService,
-    updateMatchService, getAllAudiencesService, getTournamentByMatchIdService,
-    getAudiencesByMatchIdService, deleteMatchByIdService
+  getMatchByIdService,
+  getMatchByNameService,
+  getAllMatchesService,
+  addMatchService,
+  updateMatchService,
+  getAllAudiencesService,
+  getTournamentByMatchIdService,
+  getAudiencesByMatchIdService,
+  deleteMatchByIdService,
 } from "../services/MatchServices";
 
-
-
 const MatchData = () => {
+  const [mid, setMid] = useState(0);
+  const [match, setMatch] = useState(new Match());
+  const [midA, setMidA] = useState(0);
+  const [midT, setMidT] = useState(0);
+  const [tournament, setTournament] = useState(new Tournament());
+  const [mname, setMname] = useState(``);
+  const [matchN, setMatchN] = useState(new Match());
+  const [allAudiencesByMatch, setAllAudiencesByMatch] = useState([]);
+  const [matchToBeAdded, setMatchToBeAdded] = useState(new Match());
+  const [matchToBeUpdated, setMatchToBeUpdated] = useState(new Match());
+  const [tournamentUp, setTournamentUp] = useState(new Tournament());
+  const [allMatches, setAllMatches] = useState([]);
+  const [midD, setMidD] = useState(0);
 
-    const [mid, setMid] = useState(0);
-    const [match, setMatch] = useState(new Match());
-    const [midA, setMidA] = useState(0);
-    const [midT, setMidT] = useState(0);
-    const [tournament, setTournament] = useState(new Tournament())
-    const [mname, setMname] = useState(``);
-    const [matchN, setMatchN] = useState(new Match());
-    const [allAudiencesByMatch, setAllAudiencesByMatch] = useState([]);
-    const [matchToBeAdded, setMatchToBeAdded] = useState(new Match());
-    const [matchToBeUpdated, setMatchToBeUpdated] = useState(new Match());
-    const [tournamentUp, setTournamentUp] = useState(new Tournament());
-    const [allMatches, setAllMatches] = useState([]);
-    const [midD, setMidD] = useState(0);
+  const matchDataFromStore = useSelector((abc) => abc.match.matchData);
+  const allMatchesDataFromStore = useSelector((state) => state.match.matchList);
+  // const allPlayersByTeamDataFromStore = useSelector((state) => state.team.playerByTeamList);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    getAllMatchesService()
+      .then((response) => {
+        console.log(response.data);
+        dispatch(getAllMatches(response.data));
+      })
+      .catch((error) => {
+        alert(error);
+        setAllMatches([]);
+      });
+  }, []);
 
-    const matchDataFromStore = useSelector((abc) => abc.match.matchData);
-    const allMatchesDataFromStore = useSelector((state) => state.match.matchList);
-    // const allPlayersByTeamDataFromStore = useSelector((state) => state.team.playerByTeamList);
-    const dispatch = useDispatch();
+  const handleGetMatchById = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setMid(evt.target.value);
+  };
 
-    useEffect(() => {
+  const submitGetMatchById = (evt) => {
+    console.log(mid);
+    evt.preventDefault();
+    getMatchByIdService(mid)
+      .then((response) => {
+        dispatch(getMatchById(response.data));
+        setMid(response.data.teamId);
+      })
+      .catch((error) => {
+        alert(`Match with matchId ${mid} not found !`);
+        setMatch(new Match());
+      });
+    setMid("");
+  };
 
-    }, []);
+  const handleGetMatchByName = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setMname(evt.target.value);
+  };
 
-    const handleGetMatchById = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setMid(evt.target.value);
-    }
+  const submitGetMatchByName = (evt) => {
+    console.log(mname);
+    evt.preventDefault();
+    getMatchByNameService(mname)
+      .then((response) => {
+        setMatchN(response.data);
+      })
+      .catch((error) => {
+        alert(`Match with matchName ${mname} not found !`);
+        setMatchN(new Match());
+      });
+    setMname("");
+  };
 
+  const handleGetAllAudiencesByMatch = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setMidA(evt.target.value);
+  };
 
-    const submitGetMatchById = (evt) => {
-        console.log(mid);
-        evt.preventDefault();
-        getMatchByIdService(mid)
-            .then((response) => {
-                dispatch(getMatchById(response.data));
-                setMid(response.data.teamId);
-            })
-            .catch((error) => {
-                alert(`Match with matchId ${mid} not found !`);
-                setMatch(new Match());
-            })
-        setMid('');
-    }
+  const submitGetAllAudiencesByMatch = (evt) => {
+    evt.preventDefault();
+    getAudiencesByMatchIdService(midA)
+      .then((response) => {
+        console.log(response.data);
+        setAllAudiencesByMatch(response.data);
+        // setTidP(response.data[0].team.teamId);
+      })
+      .catch((error) => {
+        alert(`Audiences with matchId ${midA} not found !`);
+        setAllAudiencesByMatch([]);
+      });
+    // setTidP('');
+  };
 
-    const handleGetMatchByName = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setMname(evt.target.value);
-    }
+  const handleGetTournamentByMatch = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setMidT(evt.target.value);
+  };
 
-    const submitGetMatchByName = (evt) => {
-        console.log(mname);
-        evt.preventDefault();
-        getMatchByNameService(mname)
-            .then((response) => {
-                setMatchN(response.data);
-            })
-            .catch((error) => {
-                alert(`Match with matchName ${mname} not found !`);
-                setMatchN(new Match());
-            })
-        setMname('');;
-    }
+  const submitGetTournamentByMatch = (evt) => {
+    evt.preventDefault();
+    getTournamentByMatchIdService(midT)
+      .then((response) => {
+        console.log(response.data);
+        setTournament(response.data);
+        // setTidP(response.data[0].team.teamId);
+      })
+      .catch((error) => {
+        alert(`Tournamnet with matchId ${midT} not found !`);
+        setTournament({});
+      });
+    // setTidP('');
+  };
 
-    const handleGetAllAudiencesByMatch = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setMidA(evt.target.value);
-    }
+  const submitGetAllMatches = (evt) => {
+    evt.preventDefault();
+    getAllMatchesService()
+      .then((response) => {
+        console.log(response.data);
+        dispatch(getAllMatches(response.data));
+      })
+      .catch((error) => {
+        alert(error);
+        setAllMatches([]);
+      });
+  };
 
-    const submitGetAllAudiencesByMatch = (evt) => {
-        evt.preventDefault();
-        getAudiencesByMatchIdService(midA)
-            .then((response) => {
-                console.log(response.data);
-                setAllAudiencesByMatch(response.data);
-                // setTidP(response.data[0].team.teamId);
-            })
-            .catch((error) => {
-                alert(`Audiences with matchId ${midA} not found !`);
-                setAllAudiencesByMatch([]);
-            });
-        // setTidP('');
-    }
+  const handleAddMatch = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setMatchToBeAdded({
+      ...matchToBeAdded,
+      [e.target.name]: e.target.value,
+    });
 
-    const handleGetTournamentByMatch = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setMidT(evt.target.value);
-    }
+    setTournament({
+      ...tournament,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const submitGetTournamentByMatch = (evt) => {
-        evt.preventDefault();
-        getTournamentByMatchIdService(midT)
-            .then((response) => {
-                console.log(response.data);
-                setTournament(response.data);
-                // setTidP(response.data[0].team.teamId);
-            })
-            .catch((error) => {
-                alert(`Tournamnet with matchId ${midT} not found !`);
-                setTournament({});
-            });
-        // setTidP('');
-    }
+  const submitAddMatch = (evt) => {
+    evt.preventDefault();
+    console.log(matchToBeAdded);
+    let MatchToAdd = { ...matchToBeAdded, tournament };
+    console.log(MatchToAdd);
+    addMatchService(MatchToAdd)
+      .then((response) => {
+        console.log(response.data);
+        alert(
+          `Match with Match id ${response.data.matchId} added successfully.`
+        );
+      })
+      .catch(() => {
+        setMatchToBeAdded(new Match());
+        MatchToAdd = "";
+        setTournament(new Tournament());
+        alert("Match could not be added.");
+      });
+  };
 
+  const handleUpdateMatch = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setMatchToBeUpdated({
+      ...matchToBeUpdated,
+      [e.target.name]: e.target.value,
+    });
 
+    setTournament({
+      ...tournament,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const submitGetAllMatches = (evt) => {
-        evt.preventDefault();
-        getAllMatchesService()
-            .then((response) => {
-                console.log(response.data);
-                dispatch(getAllMatches(response.data));
-            })
-            .catch((error) => {
-                alert(error);
-                setAllMatches([]);
-            });
-    }
+  const submitUpdateMatch = (evt) => {
+    evt.preventDefault();
+    let MatchToUpdate = { ...matchToBeUpdated, tournament };
+    updateMatchService(MatchToUpdate)
+      .then((response) => {
+        console.log(response.data);
+        alert(
+          `Match with matchId ${response.data.matchId} updated successfully.`
+        );
+      })
+      .catch(() => {
+        setMatchToBeUpdated(new Match());
+        MatchToUpdate = "";
+        setTournament(new Tournament());
+        alert("Match could not be updated.");
+      });
+  };
 
-    const handleAddMatch = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
-        setMatchToBeAdded({
-            ...matchToBeAdded,
-            [e.target.name]: e.target.value
-        });
+  const handleDeleteMatchById = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setMidD(evt.target.value);
+  };
 
-        setTournament({
-            ...tournament,
-            [e.target.name]: e.target.value
-        });
-    }
+  const handleDelete = (idToDelete) => {
+    if (
+        window.confirm(`Are you sure to delete Match ${idToDelete}`) == true
+      ) {
+        deleteMatchByIdService(idToDelete)
+          .then((data) => {
+            window.location.reload();
+            alert("Deleted successfully!");
+            // history.push("/organiser");
+          })
+          .catch((error) => console.error(error));
+      } else {
+      }
+  };
 
-    const submitAddMatch = (evt) => {
-        evt.preventDefault();
-        console.log(matchToBeAdded);
-        let MatchToAdd = { ...matchToBeAdded, tournament };
-        console.log(MatchToAdd);
-        addMatchService(MatchToAdd)
-            .then((response) => {
-                console.log(response.data);
-                alert(`Match with Match id ${response.data.matchId} added successfully.`);
-            })
-            .catch(() => {
-                setMatchToBeAdded(new Match());
-                MatchToAdd = '';
-                setTournament(new Tournament());
-                alert("Match could not be added.");
-            });
-    }
-
-    const handleUpdateMatch = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
-        setMatchToBeUpdated({
-            ...matchToBeUpdated,
-            [e.target.name]: e.target.value
-        });
-
-        setTournament({
-            ...tournament,
-            [e.target.name]: e.target.value,
-        });
-    }
-
-    const submitUpdateMatch = (evt) => {
-        evt.preventDefault();
-        let MatchToUpdate = { ...matchToBeUpdated, tournament };
-        updateMatchService(MatchToUpdate)
-            .then((response) => {
-                console.log(response.data);
-                alert(`Match with matchId ${response.data.matchId} updated successfully.`);
-            })
-            .catch(() => {
-                setMatchToBeUpdated(new Match());
-                MatchToUpdate = '';
-                setTournament(new Tournament());
-                alert("Match could not be updated.");
-            });
-    }
-
-    const handleDeleteMatchById = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setMidD(evt.target.value);
-    }
-
-    const submitDeleteMatchById = (evt) => {
-        console.log(midD);
-        evt.preventDefault();
-        deleteMatchByIdService(midD)
-            .then((response) => {
-                alert(`Match with matchID ${midD} deleted successfully`);
-            })
-            .catch((error) => {
-                console.log(error);
-                alert(`Match with ${midD} not found.`);
-            });
-        setMidD('');
-    }
-
-    return (
-        <center>
-            <div className="container">
-                <div className="bg-white shadow shadow-regular mb-3 mt-5 px-3 py-3 pb-3 pt-3 col-7 text-center">
+  return (
+    <center>
+      <div className="container">
+        {/* <div className="bg-white shadow shadow-regular mb-3 mt-5 px-3 py-3 pb-3 pt-3 col-7 text-center">
                     <p>Add New Match</p>
                     <div className="form form-group" >
                         <input
@@ -447,53 +461,71 @@ const MatchData = () => {
                                 onClick={submitDeleteMatchById} />
                         </form>
                     </div>
+                </div> */}
+
+        <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
+          <div>
+            <div>
+              {allMatchesDataFromStore.length > 0 ? (
+                <div>
+                  <p className="font-weight-bold">AVAILABLE MATCHES</p>
+                  {
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Match Id</th>
+                          <th>Match Name</th>
+                          <th>Match Venue</th>
+                          <th>Match Date</th>
+                        </tr>
+                      </thead>
+                      {allMatchesDataFromStore.map((e) => (
+                        <tbody>
+                          {e.matchName !== null && (
+                            <tr>
+                              <td>{e.matchId}</td>
+                              <td>{e.matchName}</td>
+                              <td>{e.matchVenue}</td>
+                              <td>{e.matchDate.toString().substring(0, 10)}</td>
+                              <td>
+                                <Link to={`/update-match/${e.matchId}`}>
+                                  <FontAwesomeIcon icon={faPenToSquare} />
+                                </Link>
+                              </td>
+                              <td>
+                                <Link
+                                  onClick={() => handleDelete(e.matchId)}
+                                  to={"/match"}
+                                >
+                                  <FontAwesomeIcon icon={faTrashCan} />
+                                </Link>
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      ))}
+                    </table>
+                  }
                 </div>
+              ) : (
+                <>
+                  <p>Ah!</p>
+                  <p>There are no Matches...</p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="button-container">
+          <Link to="/add-match">
+            <button className="btn btn-outline-success m">Add New Match</button>
+          </Link>
+          <Link to="/">
+            <button className="btn btn-outline-secondary ml-5">Back</button>
+          </Link>
+        </div>
 
-                <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
-                    <p>Get All Matches</p>
-                    <div className="form form-group" >
-                        <input
-                            type="button"
-                            className="btn btn-primary form-control mb-3 mt-3"
-                            value="Get All Matches"
-                            onClick={submitGetAllMatches}
-                        />
-                    </div>
-                    <div>
-                        <div> {(allMatchesDataFromStore) &&
-                            <div>
-                                <p className="text-primary text-center font-weight-bold lead">List of All Matches</p>
-                                {
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Match Id</th>
-                                                <th>Match Name</th>
-                                                <th>Match Venue</th>
-                                                <th>Match Date</th>
-
-                                            </tr>
-                                        </thead>
-                                        {allMatchesDataFromStore.map((e =>
-                                            <tbody>
-                                                {e.matchName !== null &&
-                                                    <tr>
-                                                        <td>{e.matchId}</td>
-                                                        <td>{e.matchName}</td>
-                                                        <td>{e.matchVenue}</td>
-                                                        <td>{e.matchDate.toString().substring(0, 10)}</td>
-                                                    </tr>}
-                                            </tbody>
-                                        ))}
-                                    </table>
-                                }
-                            </div>
-                        }
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
+        {/* <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
                     <p>Get All Audiences By Match</p>
                     <div className="form form-group" >
                         <input
@@ -546,10 +578,10 @@ const MatchData = () => {
                         }
                         </div>
                     </div>
-                </div>
-            </div >
-        </center>
-    );
-}
+                </div> */}
+      </div>
+    </center>
+  );
+};
 
 export default MatchData;

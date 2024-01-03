@@ -2,10 +2,12 @@ import { getRoles } from "@testing-library/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/logo.png";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
 
     let [user, setUser] = useState({});
+    const currentURL = useLocation();
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('loggedInUser')));
@@ -54,18 +56,25 @@ const Header = () => {
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <Link className="nav-link text-white font-weight-bold font-italic" to="/organiser" >Organiser</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link text-white font-weight-bold font-italic" to="/tournament" >Tournament</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link text-white font-weight-bold font-italic" to="/team" >Team</Link>     
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link text-white font-weight-bold font-italic" to="/match" >Match</Link>
-                                </li>
+                                { (currentURL.pathname!="/home" && currentURL.pathname!="/") ? (
+                                    <>
+                                    <li className="nav-item">
+                                    <Link className="nav-link text-white font-weight-bold font-italic" to="/organiser" >Organisers</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white font-weight-bold font-italic" to="/tournament" >Tournaments</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white font-weight-bold font-italic" to="/team" >Teams</Link>     
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white font-weight-bold font-italic" to="/match" >Matches</Link>
+                                    </li>
+                                    </>
+                                    ) : (<>
+                                    </>)
+                                }
+                                
                                 {/* <li className="nav-item">
                                     <Link className="nav-link text-white font-weight-bold font-italic" to="/dept" >Ticket</Link>
                                 </li>

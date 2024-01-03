@@ -4,181 +4,191 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTeamById } from "../redux/TeamSlice";
 import { getAllTeams } from "../redux/TeamSlice";
 import {
-    getTeamByIdService, getTeamByNameService, getAllTeamsService, addTeamService,
-    updateTeamService, getPlayersByTeamIdService, deleteTeamByIdService
+  getTeamByIdService,
+  getTeamByNameService,
+  getAllTeamsService,
+  addTeamService,
+  updateTeamService,
+  getPlayersByTeamIdService,
+  deleteTeamByIdService,
 } from "../services/TeamServices";
-
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const TeamData = () => {
+  const [tid, setTid] = useState(0);
+  const [tidP, setTidP] = useState(0);
+  const [tname, setTname] = useState(``);
+  const [teamN, setTeamN] = useState(new Team());
+  const [team, setTeam] = useState(new Team());
+  const [teamToBeAdded, setTeamToBeAdded] = useState(new Team());
+  const [teamToBeUpdated, setTeamToBeUpdated] = useState(new Team());
+  const [allTeams, setAllTeams] = useState([]);
+  const [allPlayersByTeam, setAllPlayersByTeam] = useState([]);
+  const [tidD, setTidD] = useState(0);
 
-    const [tid, setTid] = useState(0);
-    const [tidP, setTidP] = useState(0);
-    const [tname, setTname] = useState(``);
-    const [teamN, setTeamN] = useState(new Team());
-    const [team, setTeam] = useState(new Team());
-    const [teamToBeAdded, setTeamToBeAdded] = useState(new Team());
-    const [teamToBeUpdated, setTeamToBeUpdated] = useState(new Team());
-    const [allTeams, setAllTeams] = useState([]);
-    const [allPlayersByTeam, setAllPlayersByTeam] = useState([]);
-    const [tidD, setTidD] = useState(0);
+  const teamDataFromStore = useSelector((abc) => abc.team.teamData);
+  const allTeamsDataFromStore = useSelector((state) => state.team.teamList);
+  // const allPlayersByTeamDataFromStore = useSelector((state) => state.team.playerByTeamList);
+  const dispatch = useDispatch();
 
-    const teamDataFromStore = useSelector((abc) => abc.team.teamData);
-    const allTeamsDataFromStore = useSelector((state) => state.team.teamList);
-    // const allPlayersByTeamDataFromStore = useSelector((state) => state.team.playerByTeamList);
-    const dispatch = useDispatch();
+  useEffect(() => {
+    getAllTeamsService()
+      .then((response) => {
+        console.log(response.data);
+        dispatch(getAllTeams(response.data));
+      })
+      .catch((error) => {
+        alert(error);
+        setAllTeams([]);
+      });
+  }, []);
 
-    useEffect(() => {
+  const handleGetTeamById = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setTid(evt.target.value);
+  };
 
-    }, []);
+  const submitGetTeamById = (evt) => {
+    console.log(tid);
+    evt.preventDefault();
+    getTeamByIdService(tid)
+      .then((response) => {
+        dispatch(getTeamById(response.data));
+        setTid(response.data.teamId);
+      })
+      .catch((error) => {
+        alert(`Team with teamId ${tid} not found !`);
+        setTeam(new Team());
+      });
+    setTid(0);
+  };
 
-    const handleGetTeamById = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setTid(evt.target.value);
-    }
+  const handleGetTeamByName = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setTname(evt.target.value);
+  };
 
-    const submitGetTeamById = (evt) => {
-        console.log(tid);
-        evt.preventDefault();
-        getTeamByIdService(tid)
-            .then((response) => {
-                dispatch(getTeamById(response.data));
-                setTid(response.data.teamId);
-            })
-            .catch((error) => {
-                alert(`Team with teamId ${tid} not found !`);
-                setTeam(new Team());
-            })
-        setTid(0);
-    }
+  const submitGetTeamByName = (evt) => {
+    console.log(tname);
+    evt.preventDefault();
+    getTeamByNameService(tname)
+      .then((response) => {
+        setTeamN(response.data);
+      })
+      .catch((error) => {
+        alert(`Team with teamName ${tname} not found !`);
+        setTeamN(new Team());
+      });
+    setTname("");
+  };
 
-    const handleGetTeamByName = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setTname(evt.target.value);
-    }
+  const handleGetAllPlayersByTeam = (evt) => {
+    console.log(evt.target.name);
+    console.log(evt.target.value);
+    setTidP(evt.target.value);
+  };
 
-    const submitGetTeamByName = (evt) => {
-        console.log(tname);
-        evt.preventDefault();
-        getTeamByNameService(tname)
-            .then((response) => {
-                setTeamN(response.data);
-            })
-            .catch((error) => {
-                alert(`Team with teamName ${tname} not found !`);
-                setTeamN(new Team());
-            })
-        setTname('');;
-    }
+  const submitGetAllPlayersByTeam = (evt) => {
+    evt.preventDefault();
+    getPlayersByTeamIdService(tidP)
+      .then((response) => {
+        console.log(response.data);
+        setAllPlayersByTeam(response.data);
+        // setTidP(response.data[0].team.teamId);
+      })
+      .catch((error) => {
+        alert(`Players with teamId ${tid} not found !`);
+        setAllPlayersByTeam([]);
+      });
+    // setTidP('');
+  };
 
-    const handleGetAllPlayersByTeam = (evt) => {
-        console.log(evt.target.name);
-        console.log(evt.target.value);
-        setTidP(evt.target.value);
-    }
+  const submitGetAllTeams = (evt) => {
+    evt.preventDefault();
+    console.log("hello");
+    getAllTeamsService()
+      .then((response) => {
+        console.log(response.data);
+        dispatch(getAllTeams(response.data));
+      })
+      .catch((error) => {
+        alert(error);
+        setAllTeams([]);
+      });
+  };
 
-    const submitGetAllPlayersByTeam = (evt) => {
-        evt.preventDefault();
-        getPlayersByTeamIdService(tidP)
-            .then((response) => {
-                console.log(response.data);
-                setAllPlayersByTeam(response.data);
-                // setTidP(response.data[0].team.teamId);
-            })
-            .catch((error) => {
-                alert(`Players with teamId ${tid} not found !`);
-                setAllPlayersByTeam([]);
-            });
-        // setTidP('');
-    }
+  const handleAddTeam = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setTeamToBeAdded({
+      ...teamToBeAdded,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const submitGetAllTeams = (evt) => {
-        evt.preventDefault();
-        getAllTeamsService()
-            .then((response) => {
-                console.log(response.data);
-                dispatch(getAllTeams(response.data));
-            })
-            .catch((error) => {
-                alert(error);
-                setAllTeams([]);
-            });
-    }
+  const submitAddTeam = (evt) => {
+    evt.preventDefault();
+    console.log(teamToBeAdded);
+    let TeamToAdd = { ...teamToBeAdded };
+    addTeamService(TeamToAdd)
+      .then((response) => {
+        console.log(response.data);
+        alert(`Team with Team id ${response.data.teamId} added successfully.`);
+      })
+      .catch(() => {
+        setTeamToBeAdded(new Team());
+        TeamToAdd = "";
+        alert("Team could not be added.");
+      });
+  };
 
-    const handleAddTeam = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
-        setTeamToBeAdded({
-            ...teamToBeAdded,
-            [e.target.name]: e.target.value
-        });
-    }
+  const handleUpdateTeam = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setTeamToBeUpdated({
+      ...teamToBeUpdated,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const submitAddTeam = (evt) => {
-        evt.preventDefault();
-        console.log(teamToBeAdded);
-        let TeamToAdd = { ...teamToBeAdded };
-        addTeamService(TeamToAdd)
-            .then((response) => {
-                console.log(response.data);
-                alert(`Team with Team id ${response.data.teamId} added successfully.`);
-            })
-            .catch(() => {
-                setTeamToBeAdded(new Team());
-                TeamToAdd = '';
-                alert("Team could not be added.");
-            });
-    }
+  const submitUpdateTeam = (evt) => {
+    evt.preventDefault();
+    let TeamToUpdate = { ...teamToBeUpdated };
+    updateTeamService(TeamToUpdate)
+      .then((response) => {
+        console.log(response.data);
+        alert(`Team with TeamId ${response.data.teamId} updated successfully.`);
+      })
+      .catch(() => {
+        setTeamToBeUpdated(new Team());
+        TeamToUpdate = "";
+        alert("Team could not be updated.");
+      });
+  };
 
-    const handleUpdateTeam = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
-        setTeamToBeUpdated({
-            ...teamToBeUpdated,
-            [e.target.name]: e.target.value
-        });
-    }
+  const handleDelete = (idToDelete) => {
+    if (
+        window.confirm(`Are you sure to delete Team ${idToDelete}`) == true
+      ) {
+        deleteTeamByIdService(idToDelete)
+          .then((data) => {
+            window.location.reload();
+            alert("Deleted successfully!");
+            // history.push("/organiser");
+          })
+          .catch((error) => console.error(error));
+      } else {
+      }
+  }
 
-    const submitUpdateTeam = (evt) => {
-        evt.preventDefault();
-        let TeamToUpdate = { ...teamToBeUpdated };
-        updateTeamService(TeamToUpdate)
-            .then((response) => {
-                console.log(response.data);
-                alert(`Team with TeamId ${response.data.teamId} updated successfully.`);
-            })
-            .catch(() => {
-                setTeamToBeUpdated(new Team());
-                TeamToUpdate = '';
-                alert("Team could not be updated.");
-            });
-    }
-
-    // const handleDeleteTeamById = (evt) => {
-    //     console.log(evt.target.name);
-    //     console.log(evt.target.value);
-    //     setTidD(evt.target.value);
-    // }
-
-    // const submitDeleteTeamById = (evt) => {
-    //     console.log(tidD);
-    //     evt.preventDefault();
-    //     deleteTeamByIdService(tidD)
-    //         .then((response) => {
-    //             alert(`Team with teamID ${tidD} deleted successfully`);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             alert(`Team with ${tidD} not found.`);
-    //         });
-    //     setTidD('');
-    // }
-
-    return (
-        <center>
-            <div className="container">
-                <div className="bg-white shadow shadow-regular mb-3 mt-5 px-3 py-3 pb-3 pt-3 col-7 text-center">
+  return (
+    <center>
+      <div className="container">
+        {/* <div className="bg-white shadow shadow-regular mb-3 mt-5 px-3 py-3 pb-3 pt-3 col-7 text-center">
                     <p>Add New Team</p>
                     <div className="form form-group" >
                         <input
@@ -214,8 +224,9 @@ const TeamData = () => {
                             onClick={submitAddTeam}
                         />
                     </div>
-                </div>
-                <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
+                </div> */}
+
+        {/* <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
                     <p>Find a Team</p>
                     <div>
                         <form className="form form-group">
@@ -316,9 +327,9 @@ const TeamData = () => {
                             onClick={submitUpdateTeam}
                         />
                     </div>
-                </div>
+                </div> */}
 
-                {/* <div className="bg-white shadow shadow-regular mb-3 mt-3 px-3 py-3 pb-3 pt-3 col-7">
+        {/* <div className="bg-white shadow shadow-regular mb-3 mt-3 px-3 py-3 pb-3 pt-3 col-7">
                     <p>Delete a Team</p>
                     <div>
                         <form className="form form-group">
@@ -340,49 +351,68 @@ const TeamData = () => {
                     </div>
                 </div> */}
 
-                <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
-                    <p>Get All Teams</p>
-                    <div className="form form-group" >
-                        <input
-                            type="button"
-                            className="btn btn-primary form-control mb-3 mt-3"
-                            value="Get All Teamss"
-                            onClick={submitGetAllTeams}
-                        />
-                    </div>
-                    <div>
-                        <div> {(allTeamsDataFromStore) &&
-                            <div>
-                                <p className="text-primary text-center font-weight-bold lead">List of All Teams</p>
-                                {
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Team Id</th>
-                                                <th>Team Name</th>
-                                                <th>Owner</th>
-                                                <th>Captain</th>
-                                            </tr>
-                                        </thead>
-                                        {allTeamsDataFromStore.map((e =>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{e.teamId}</td>
-                                                    <td>{e.teamName}</td>
-                                                    <td>{e.ownerName}</td>
-                                                    <td>{e.captainName}</td>
-                                                </tr>
-                                            </tbody>
-                                        ))}
-                                    </table>
-                                }
-                            </div>
-                        }
-                        </div>
-                    </div>
-                </div>
+        <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
+          <div>
+            {allTeamsDataFromStore.length > 0 ? (
+              <div>
+                <p className="font-weight-bold">AVAILABLE TEAMS</p>
+                {/* <p className="text-primary text-center font-weight-bold lead">List of All Teams</p> */}
+                {
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Team Id</th>
+                        <th>Team Name</th>
+                        <th>Owner</th>
+                        <th>Captain</th>
+                      </tr>
+                    </thead>
+                    {allTeamsDataFromStore.map((e) => (
+                      <tbody>
+                        <tr>
+                          <td>{e.teamId}</td>
+                          <td>{e.teamName}</td>
+                          <td>{e.ownerName}</td>
+                          <td>{e.captainName}</td>
+                          <td>
+                            <Link to={`/update-team/${e.teamId} `}>
+                              <FontAwesomeIcon icon={faPenToSquare} />
+                            </Link>
+                          </td>
+                          <td>
+                            <Link
+                              onClick={() => handleDelete(e.teamId)}
+                              to={"/team"}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </Link>
+                          </td>
+                        </tr>
+                      </tbody>
+                    ))}
+                  </table>
+                }
+              </div>
+            ) : (
+              <>
+                <p>Ah!</p>
+                <p>There are no Teams...</p>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="button-container">
+          <Link to="/add-team">
+            <button className="btn btn-outline-success m">
+              Add New Team
+            </button>
+          </Link>
+          <Link to="/">
+            <button className="btn btn-outline-secondary ml-5">Back</button>
+          </Link>
+        </div>
 
-                <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
+        {/* <div className="bg-white shadow shadow-regular mb-5 mt-5 px-3 py-3 pb-3 pt-3 col-7">
                     <p>Get All Players By Team</p>
                     <div className="form form-group" >
                         <input
@@ -433,10 +463,10 @@ const TeamData = () => {
                         }
                         </div>
                     </div>
-                </div>
-            </div >
-        </center >
-    );
-}
+                </div> */}
+      </div>
+    </center>
+  );
+};
 
 export default TeamData;
