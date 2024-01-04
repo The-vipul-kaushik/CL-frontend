@@ -9,7 +9,7 @@ const Home = () => {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("loggedInUser")));
-    console.log(JSON.parse(localStorage.getItem("loggedInUser")));
+    // console.log(JSON.parse(localStorage.getItem("loggedInUser")));
   }, []);
 
   if (user == null) {
@@ -58,9 +58,9 @@ const Home = () => {
           style={{ width: "50%", justifyContent: "center" }}
         >
           <Link to="/organiser" className="btn btn-light mt-5 btn-block">ORGANISERS</Link>
-          <Link to="/tournament" className="btn btn-light mt-3 btn-block">TOURNAMENTS</Link>
-          <Link to="/team" className="btn btn-light mt-3 btn-block">TEAMS</Link>
-          <Link to="/match" className="btn btn-light mt-3 btn-block">MATCHES</Link>
+          <Link to="/tournament" className="btn btn-success mt-3 btn-block">TOURNAMENTS</Link>
+          <Link to="/team" className="btn btn-primary mt-3 btn-block">TEAMS</Link>
+          <Link to="/match" className="btn btn-warning mt-3 btn-block">MATCHES</Link>
         </div>
       </center>
     );

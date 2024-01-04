@@ -14,18 +14,18 @@ const OrgSlice = createSlice({
 
   reducers: {
     getOrgById: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.orgData = action.payload;
     },
     getAllOrgs: (state, action) => {
-      console.log(state);
-      console.log(action.payload);
+      // console.log(state);
+      // console.log(action.payload);
       state.orgList = action.payload;
       state.orgList.sort((a, b) => a["organiserId"] - b["organiserId"]);
     },
     getAllToursByOrgId: (state, action) => {
-      console.log(state);
-      console.log(action.payload);
+      // console.log(state);
+      // console.log(action.payload);
       state.tourList = action.payload;
     },
 

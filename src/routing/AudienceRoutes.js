@@ -5,6 +5,19 @@ import Home from '../components/Home';
 import Page404 from '../components/Page404';
 import Logout from '../components/Logout';
 import { Redirect } from 'react-router-dom';
+import OrganiserData from '../components/OrganiserData';
+import TournamentData from '../components/TournamentData';
+import TeamData from '../components/TeamData';
+import MatchData from '../components/MatchData';
+import AddOrganiser from '../components/AddOrganiser';
+import AddTournament from '../components/AddTournament';
+import AddMatch from '../components/AddMatch';
+import AddTeam from '../components/AddTeam';
+import UpdateMatch from '../components/UpdateMatch';
+import UpdateTournament from '../components/UpdateTournament';
+import UpdateOrganiser from '../components/UpdateOrganiser';
+import UpdateTeam from '../components/UpdateTeam';
+
 
 const AudienceRoutes = () => {
 
@@ -17,7 +30,20 @@ const AudienceRoutes = () => {
                         <Switch>
                             <Route exact path="/" > <Home /> </Route>
                             <Route path="/home" > <Home /> </Route>
-                            {/* <Route path="/audience" > <Audience /> </Route> */}
+                            <Route path="/organiser"> <OrganiserData /> </Route>
+                            <Route path="/tournament"> <TournamentData /> </Route>
+                            <Route path="/team"> <TeamData /> </Route>
+                            <Route path="/match"> <MatchData /> </Route>
+                            <Route path="/add-organiser"> <AddOrganiser /> </Route>
+                            <Route path="/add-tournament"> <AddTournament /> </Route>
+                            <Route path="/add-team"> <AddTeam /> </Route>
+                            <Route path="/add-match"> <AddMatch /> </Route>
+                            <Route path="/update-organiser/:id"> <UpdateOrganiser /> </Route>
+                            <Route path="/update-tournament/:id"> <UpdateTournament /> </Route>
+                            <Route path="/update-team/:id"> <UpdateTeam /> </Route>
+                            <Route path="/update-match/:id"> <UpdateMatch /> </Route>
+                            <Route path="/register"> <Redirect> <Home /> </Redirect> </Route>
+                            <Route path="/login"> <Redirect> <Home /> </Redirect> </Route>
                             <Route path="/logout"> <Logout /> </Route>
                             <Route path="/*"> <Page404 /> </Route>
                         </Switch>

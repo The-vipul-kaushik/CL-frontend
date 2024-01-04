@@ -13,12 +13,12 @@ const MatchSlice = createSlice({
     reducers: {
 
         getMatchById: (state, action) => {
-            console.log(action.payload);
+            // console.log(action.payload);
             state.matchData = action.payload;
         },
         getAllMatches: (state, action) => {
-            console.log(state);
-            console.log(action.payload);
+            // console.log(state);
+            // console.log(action.payload);
             state.matchList = action.payload;
         }
     }

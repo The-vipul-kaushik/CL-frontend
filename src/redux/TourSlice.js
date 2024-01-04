@@ -16,17 +16,17 @@ const TourSlice = createSlice({
     reducers: {
 
         getTourById: (state, action) => {
-            console.log(action.payload);
+            // console.log(action.payload);
             state.tourData = action.payload;
         }, 
         getAllTours: (state, action) => {
-                console.log(state);
-                console.log(action.payload);
+                // console.log(state);
+                // console.log(action.payload);
                 state.tourList = action.payload;
         },
         getAllMatches: (state, action) => {
-                console.log(state);
-                console.log(action.payload);
+                // console.log(state);
+                // console.log(action.payload);
                 state.matchList = action.payload;
         }
         

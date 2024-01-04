@@ -12,8 +12,8 @@ const Register = () => {
     const [credentials, setCredentials] = useState('');
 
     const handleAppUser = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.value);
+        // console.log(event.target.name);
+        // console.log(event.target.value);
         setAppUser({
             ...appUser,
             [event.target.name]: event.target.value
@@ -24,7 +24,7 @@ const Register = () => {
 
         registerService(appUser)
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 alert('You are registered successfully. Please login now.');
                 history.push('/login'); // check this method to navigate 
             }).catch((error) => {
@@ -63,7 +63,6 @@ const Register = () => {
                             <select class="form-control mb-3" name="role" id="role" onChange={handleAppUser}>
                                 <option value="Role">Select a role</option>
                                 <option value="ADMIN">ADMIN</option>
-                                <option value="OWNER">OWNER</option>
                                 <option value="AUDIENCE">AUDIENCE</option>
                             </select>
                         </div>

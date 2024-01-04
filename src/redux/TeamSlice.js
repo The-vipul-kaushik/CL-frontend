@@ -16,17 +16,17 @@ const TeamSlice = createSlice({
     reducers: {
 
         getTeamById: (state, action) => {
-            console.log(action.payload);
+            // console.log(action.payload);
             state.teamData = action.payload;
         }, 
         getAllTeams: (state, action) => {
-                console.log(state);
-                console.log(action.payload);
+                // console.log(state);
+                // console.log(action.payload);
                 state.teamList = action.payload;
         },
         getAllPlayersByTeam: (state, action) => {
-            console.log(state);
-            console.log(action.payload);
+            // console.log(state);
+            // console.log(action.payload);
             state.playerByTeamList = action.payload;
     }
         

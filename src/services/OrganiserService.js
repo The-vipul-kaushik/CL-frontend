@@ -4,34 +4,34 @@ const springBootAppUrl = `http://localhost:8088/`;
 // const springBootAppUrl = `https://apimocha.com/userdb/`;
 
 const getOrgByIdService = (oid) => {
-  console.log(oid);
+  // console.log(oid);
   return axios.get(`${springBootAppUrl}org/get-organiser-by-id/${oid}`);
 };
 const getAllOrgsService = () => {
-  console.log(`getAllOrganisersService`);
+  // console.log(`getAllOrganisersService`);
   return axios.get(`${springBootAppUrl}org/get-all-organisers`);
 };
 
 const addOrgService = (org) => {
-  console.log(`addOrgService`);
+  // console.log(`addOrgService`);
   return axios.post(`${springBootAppUrl}org/insert-org`, org);
 };
 
 const updateOrgService = (org) => {
-  console.log(`updateOrgService`);
+  // console.log(`updateOrgService`);
   return axios.put(`${springBootAppUrl}org/update-org`, org);
 };
 
 // add more functionalities here
 const getToursByOrgIdService = (oid) => {
-  console.log(oid);
+  // console.log(oid);
   return axios.get(
     `${springBootAppUrl}org/get-tournaments-by-organiserId/${oid}`
   );
 };
 
 const deleteOrganiserByIdService = (oid) => {
-  console.log(oid);
+  // console.log(oid);
   return axios.delete(
     `${springBootAppUrl}org/delete-organiser-by-organiserId/${oid}`
   );

@@ -11,8 +11,8 @@ const Login = () => {
     const history = useHistory();
 
     const handleAppUser = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.value);
+        // console.log(event.target.name);
+        // console.log(event.target.value);
         setAppUser({
             ...appUser,
             [event.target.name]: event.target.value
@@ -23,7 +23,7 @@ const Login = () => {
         loginService(appUser)
             .then((response) => {
                 localStorage.setItem('loggedInUser', JSON.stringify(appUser));
-                console.log(JSON.parse(localStorage.getItem('loggedInUser')).role);
+                // console.log(JSON.parse(localStorage.getItem('loggedInUser')).role);
                 alert('You are successfully logged in !!');
                 history.push('/home');
                 window.location.assign('/home');
@@ -68,7 +68,6 @@ const Login = () => {
                             <select class="form-control mb-3" name="role" value={appUser.role} id="role" onChange={handleAppUser}>
                                 <option value="Role">Select a role</option>
                                 <option value="ADMIN">ADMIN</option>
-                                <option value="OWNER">OWNER</option>
                                 <option value="AUDIENCE">AUDIENCE</option>
                             </select>
                         </div>

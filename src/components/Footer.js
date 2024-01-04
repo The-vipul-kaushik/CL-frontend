@@ -4,7 +4,7 @@ const Footer = () => {
 
         <footer class="bg-dark text-center text-lg-start">
         <div class="text-center p-3 text-light">
-            © 2022 Copyright: CricketLeague
+            © 2024 Copyright: CricketLeague
         </div>
         </footer>
     );

@@ -20,12 +20,12 @@ const Routes = () => {
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('loggedInUser')));
-        console.log(JSON.parse(localStorage.getItem('loggedInUser')));
+        // console.log(JSON.parse(localStorage.getItem('loggedInUser')));
     }, []);
 
 
     if(user==null) {
-        console.log(localStorage.getItem('loggedInUser'));
+        // console.log(localStorage.getItem('loggedInUser'));
         return (
             <div >
                 <Router>
@@ -53,14 +53,6 @@ const Routes = () => {
             </div>
         );
     }
-    else if(user.role=="OWNER") {
-        return (
-            <div>
-                <OwnerRoutes />
-            </div>
-        );
-
-    }
     else if(user.role=="AUDIENCE") {
         return (
             <div>
@@ -68,11 +60,6 @@ const Routes = () => {
             </div>
         );
     }
-    else
-    {
-
-    }
-
 }
 
 

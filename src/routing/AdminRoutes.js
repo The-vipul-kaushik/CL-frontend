@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -42,8 +41,6 @@ const AdminRoutes = () => {
                             <Route path="/update-tournament/:id"> <UpdateTournament /> </Route>
                             <Route path="/update-team/:id"> <UpdateTeam /> </Route>
                             <Route path="/update-match/:id"> <UpdateMatch /> </Route>
-                            {/*<Route path="/ticket"> <Ticket /> </Route>
-                            <Route path="/audience"> <Audience /> </Route> */}
                             <Route path="/register"> <Redirect> <Home /> </Redirect> </Route>
                             <Route path="/login"> <Redirect> <Home /> </Redirect> </Route>
                             <Route path="/logout"> <Logout /> </Route>

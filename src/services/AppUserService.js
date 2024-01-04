@@ -4,12 +4,12 @@ import axios from "axios";
 // const springBootAppUrl = `https://apimocha.com/userdb/`;
 
 const registerService = (appUser) => {
-  console.log(appUser);
+  // console.log(appUser);
   return axios.post(`${springBootAppUrl}user/register`, appUser);
 };
 
 const loginService = (appUser) => {
-  console.log(appUser);
+  // console.log(appUser);
   return axios.post(`${springBootAppUrl}user/login`, appUser);
 };
 
